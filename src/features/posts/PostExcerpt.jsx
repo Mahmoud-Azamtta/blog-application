@@ -2,8 +2,11 @@ import PostAuthor from "./PostAuthor";
 import TimeAgo from "./TimeAgo";
 import ReactionButtons from "./ReactionButtons";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectPostById } from "./postsSlice";
 
-const PostExcerpt = ({ post }) => {
+const PostExcerpt = ({ postId }) => {
+  const post = useSelector((state) => selectPostById(state, postId));
   return (
     <article className="bg-slate-800 text-white w-full border border-gray-500 mb-3 p-5 rounded-lg">
       <h3 className="text-3xl border-b pb-2 mb-4 capitalize border-gray-500">

@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import {
-  selectAllPosts,
+  selectPostsIds,
   getPostsStatus,
   getPostsError,
   fetchPosts,
@@ -11,10 +11,9 @@ import PostExcerpt from "./PostExcerpt";
 const PostsList = () => {
   const dispatch = useDispatch();
 
-  const posts = useSelector(selectAllPosts);
+  const postIds = useSelector(selectPostsIds);
   const postsStatus = useSelector(getPostsStatus);
   const error = useSelector(getPostsError);
-
   useEffect(() => {
     if (postsStatus === "idle") dispatch(fetchPosts());
   }, [postsStatus, dispatch]);
@@ -23,11 +22,8 @@ const PostsList = () => {
   if (postsStatus === "loading") {
     content = <p className="text-center">Loading...</p>;
   } else if (postsStatus === "succeeded") {
-    const orderedPosts = posts
-      .slice() // the slice here is to make a shallow copy of the posts
-      .sort((a, b) => b.date.localeCompare(a.date));
-    content = orderedPosts.map((post) => (
-      <PostExcerpt key={post.id} post={post} />
+    content = postIds.map((postId) => (
+      <PostExcerpt key={postId} postId={postId} />
     ));
   } else if (postsStatus === "failed") {
     content = <p>{error}</p>;
